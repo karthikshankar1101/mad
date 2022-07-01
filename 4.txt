@@ -1,0 +1,113 @@
+MainActivity.java: 
+
+package com.example.wallpaperapp;
+import androidx.appcompat.app.AppCompatActivity;
+import android.app.WallpaperManager;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+public class MainActivity extends AppCompatActivity implements
+        View.OnClickListener {
+    Button btnChangeWallpaper;
+    boolean running;
+    int[] imagesArray=new int[]{
+            R.drawable.w1,
+            R.drawable.w2,
+            R.drawable.w3,
+            R.drawable.w4,
+            R.drawable.w5
+    };
+    int i=0;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        btnChangeWallpaper=(Button)
+                findViewById(R.id.button);
+        btnChangeWallpaper.setOnClickListener(this);
+    }
+    public void onClick(View v)
+    {
+        if(!running)
+        {
+            new Timer().schedule
+                    (new MyTimer(),0,3000);
+            running=true;
+        }
+    }
+    class MyTimer extends TimerTask
+    {
+        public void run()
+        {
+            try {
+                WallpaperManager wallpaperManager =
+                        WallpaperManager.getInstance(getBaseContext());
+//                Random ran = new Random();
+//                i = ran.nextInt(5) + 1;
+                i = (int) Math.round(Math.random()*4);
+//                if(i==4) {
+//                    i=1;
+//                }
+//                if(i==2)
+//                {
+//                    i=3;
+//                }
+//                if(i==3)
+//                {
+//                    i=2;
+//                }
+//                if(i==1)
+//                {
+//                    i=2;
+//                }
+                wallpaperManager.setBitmap
+                        (BitmapFactory.decodeResource(getResources() ,imagesArray[i]));
+                i++;
+            }
+            catch(Exception e)
+            {
+            }
+        }
+    }
+}
+
+activity_main.xml: 
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:text="Changing wallpaper application"
+        android:textColor="#007BFF"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="314dp"
+        android:layout_height="78dp"
+        android:backgroundTint="#007BFF"
+        android:text="Click Here to Change Wallpaper"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.192" />
+</androidx.constraintlayout.widget.ConstraintLayout>
